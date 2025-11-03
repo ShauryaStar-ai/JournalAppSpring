@@ -27,8 +27,7 @@ public class JournalApplication {
             }
 
             @PostMapping
-            public void createEntry(@RequestBody Entry entry) {
-                collectionOfJournalEntries.put(entry.getId(), entry);
+            public void createEntry() {
             }
         }
 
