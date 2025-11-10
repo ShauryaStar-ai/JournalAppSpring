@@ -1,20 +1,25 @@
 package net.engineeringdigest.journalApp.services;
 
 import net.engineeringdigest.journalApp.entity.Entry;
+import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repos.JournalEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @Component
 public class JournaEntryService {
     @Autowired
-    private JournalEntryRepo journalEntryRepo; // Journal Entry Repo
-    public void saveEntry(Entry entry){
+    private JournalEntryRepo journalEntryRepo;
+    @Autowired
+    private UserService userService; // Journal Entry Repo
+    public void saveEntry(Entry entry, User user){
+        String userName1 = user.getUserName();
+        User byUserName = userService.findByUserName(userName1);
+
         journalEntryRepo.save(entry);
     }
         public List<Entry> returnALLEntries(){

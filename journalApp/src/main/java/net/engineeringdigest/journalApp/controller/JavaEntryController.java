@@ -44,10 +44,10 @@ public class JavaEntryController {
         }
     }
 
-    @PostMapping
-    public String createEntry(@RequestBody Entry entry) {
+    @PostMapping("/{userName}")
+    public String createEntry(@RequestBody Entry entry,@PathVariable String userName) {
         try{
-            journaEntryService.saveEntry(entry);
+            journaEntryService.saveEntry(entry,byUserName);
             return ResponseEntity.status(HttpStatus.CREATED).toString();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
@@ -86,19 +86,19 @@ public class JavaEntryController {
 
     @PutMapping("id/{myId}")
     public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry ){
-        try{
+        /*try{
         ObjectId id = new ObjectId(myId);
             Entry old = journaEntryService.findByID(id);
             old.setTitle(entry.getTitle());
             old.setConent(entry.getConent());
-            journaEntryService.saveEntry(old);
+            journaEntryService.saveEntry(old, byUserName);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to update entry: " + e.getMessage());
         }
-        }
+        }*/
 
 
 }
