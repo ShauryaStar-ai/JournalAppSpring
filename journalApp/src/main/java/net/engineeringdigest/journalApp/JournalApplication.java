@@ -16,20 +16,6 @@ public class JournalApplication {
     public static void main(String[] args) {
         SpringApplication.run(JournalApplication.class, args);
 
-        @RestController
-        @RequestMapping("/journal") // endpoint for the whole class
-        class JavaEntryController {
-            private Map<Integer, Entry> collectionOfJournalEntries = new HashMap<>();
-
-            @GetMapping
-            public List<Entry> getAll() {
-                return new ArrayList<>(collectionOfJournalEntries.values());
-            }
-
-            @PostMapping
-            public void createEntry() {
-            }
-        }
 
     }
 }

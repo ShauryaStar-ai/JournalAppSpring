@@ -29,12 +29,6 @@ public class JournaEntryService {
     public void deleteEntryByID(@PathVariable ObjectId  id){
         journalEntryRepo.deleteById(id);
     }
-    public void updateEntryByID(@PathVariable ObjectId myId, @RequestBody Entry entry){
-        Entry old = findByID(myId);
-        if (old != null){
-            old.setConent(entry.getConent());
-            old.setTitle(entry.getTitle());
-        }
-        saveEntry(old);
-    }
+
+
 }

@@ -1,7 +1,9 @@
 package net.engineeringdigest.journalApp.controller;
 
 import net.engineeringdigest.journalApp.entity.Entry;
+import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.services.JournaEntryService;
+import net.engineeringdigest.journalApp.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,18 +17,24 @@ import java.util.List;
 public class JavaEntryController {
 
     @Autowired
-    JournaEntryService  journaEntryService;
-    @GetMapping
-    public ResponseEntity<List<Entry>> getAll(){
+    JournaEntryService journaEntryService;
+
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/{userName}")
+    public ResponseEntity<List<Entry>> getAllEntriesOfTheUser(@PathVariable String userName) {
         try {
-            List<Entry> entries = journaEntryService.returnALLEntries();
+            User byUserName = userService.findByUserName(userName);
+            if (byUserName == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            List<Entry> entries = byUserName.getEntriesByTheUser();
 
             if (entries.isEmpty()) {
-                // No entries found → return 204 No Content
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
 
-            // Entries found → return 200 OK + data
             return ResponseEntity.ok(entries);
 
         } catch (Exception e) {
