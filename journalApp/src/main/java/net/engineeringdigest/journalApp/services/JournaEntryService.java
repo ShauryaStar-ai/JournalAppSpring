@@ -16,11 +16,12 @@ public class JournaEntryService {
     private JournalEntryRepo journalEntryRepo;
     @Autowired
     private UserService userService; // Journal Entry Repo
-    public void saveEntry(Entry entry, User user){
-        String userName1 = user.getUserName();
-        User byUserName = userService.findByUserName(userName1);
+    public void saveEntry(Entry entry, String  userName ){
+        User byUserName = userService.findByUserName(userName);
 
         journalEntryRepo.save(entry);
+        byUserName.getEntriesByTheUser().add(entry);
+        userService.saveEntry(byUserName);
     }
         public List<Entry> returnALLEntries(){
             return journalEntryRepo.findAll();

@@ -47,8 +47,8 @@ public class JavaEntryController {
     @PostMapping("/{userName}")
     public String createEntry(@RequestBody Entry entry,@PathVariable String userName) {
         try{
-            journaEntryService.saveEntry(entry,byUserName);
-            return ResponseEntity.status(HttpStatus.CREATED).toString();
+            journaEntryService.saveEntry(entry,userName);
+            return ResponseEntity.status(HttpStatus.CREATED).body("There entry is sucessfully added");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
         }
@@ -99,6 +99,8 @@ public class JavaEntryController {
                     .body("Failed to update entry: " + e.getMessage());
         }
         }*/
+        return null;
+    }
 
 
 }
