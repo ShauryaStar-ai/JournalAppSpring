@@ -45,12 +45,12 @@ public class JavaEntryController {
     }
 
     @PostMapping("/{userName}")
-    public String createEntry(@RequestBody Entry entry,@PathVariable String userName) {
+    public ResponseEntity<String> createEntry(@RequestBody Entry entry, @PathVariable String userName) {
         try{
             journaEntryService.saveEntry(entry,userName);
             return ResponseEntity.status(HttpStatus.CREATED).body("There entry is sucessfully added");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
+            return (ResponseEntity<String>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -68,11 +68,11 @@ public class JavaEntryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @DeleteMapping("id/{myId}")
-    public ResponseEntity<String> removeEntryByID(@PathVariable("myId") String myId) {
+    @DeleteMapping("id/{userName}/{myId}")
+    public ResponseEntity<String> removeEntryByID(@PathVariable("myId") String myId , @PathVariable String userName) {
         try {
             ObjectId id = new ObjectId(myId);
-            journaEntryService.deleteEntryByID(id);
+            journaEntryService.deleteEntryByID(id ,userName);
 
             // Return a confirmation message with HTTP 200 OK
             return ResponseEntity.ok("Entry with ID " + myId + " deleted successfully!");
@@ -83,10 +83,10 @@ public class JavaEntryController {
         }
     }
 
-
+/*
     @PutMapping("id/{myId}")
     public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry ){
-        /*try{
+        try{
         ObjectId id = new ObjectId(myId);
             Entry old = journaEntryService.findByID(id);
             old.setTitle(entry.getTitle());
@@ -98,9 +98,9 @@ public class JavaEntryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to update entry: " + e.getMessage());
         }
-        }*/
-        return null;
+        }
+        return null;*/
     }
 
 
-}
+

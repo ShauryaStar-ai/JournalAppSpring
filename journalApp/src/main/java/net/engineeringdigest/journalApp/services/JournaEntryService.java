@@ -32,8 +32,11 @@ public class JournaEntryService {
 
         return journalEntryRepo.findById(myId).orElse(null);
     }
-    public void deleteEntryByID(@PathVariable ObjectId  id){
+    public void deleteEntryByID(@PathVariable ObjectId  id, String userName){
+        User user = userService.findByUserName(userName);
+        user.getEntriesByTheUser().remove(findByID(id));
         journalEntryRepo.deleteById(id);
+        userService.saveEntry(user);
     }
 
 
