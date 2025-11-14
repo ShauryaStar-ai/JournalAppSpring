@@ -83,15 +83,15 @@ public class JavaEntryController {
         }
     }
 
-/*
-    @PutMapping("id/{myId}")
-    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry ){
+
+    @PutMapping("/{userName}/{myId}")
+    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry, @PathVariable String userName ){
         try{
         ObjectId id = new ObjectId(myId);
             Entry old = journaEntryService.findByID(id);
             old.setTitle(entry.getTitle());
             old.setConent(entry.getConent());
-            journaEntryService.saveEntry(old, byUserName);
+            journaEntryService.saveEntry(old);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
         }
         catch (Exception e) {
@@ -99,7 +99,6 @@ public class JavaEntryController {
                     .body("Failed to update entry: " + e.getMessage());
         }
         }
-        return null;*/
     }
 
 

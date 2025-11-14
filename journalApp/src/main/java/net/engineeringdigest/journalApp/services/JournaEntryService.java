@@ -23,6 +23,9 @@ public class JournaEntryService {
         byUserName.getEntriesByTheUser().add(entry);
         userService.saveEntry(byUserName);
     }
+    public void saveEntry(Entry entry){
+        journalEntryRepo.save(entry);
+    }
         public List<Entry> returnALLEntries(){
             return journalEntryRepo.findAll();
         }
