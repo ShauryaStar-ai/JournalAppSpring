@@ -50,7 +50,8 @@ public class JavaEntryController {
             journaEntryService.saveEntry(entry,userName);
             return ResponseEntity.status(HttpStatus.CREATED).body("There entry is sucessfully added");
         } catch (Exception e) {
-            return (ResponseEntity<String>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something bad happned ");
         }
 
     }

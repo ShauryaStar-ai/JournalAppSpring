@@ -6,6 +6,7 @@ import net.engineeringdigest.journalApp.repos.JournalEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -16,12 +17,14 @@ public class JournaEntryService {
     private JournalEntryRepo journalEntryRepo;
     @Autowired
     private UserService userService; // Journal Entry Repo
+    @Transactional
     public void saveEntry(Entry entry, String  userName ){
         User byUserName = userService.findByUserName(userName);
 
         journalEntryRepo.save(entry);
         byUserName.getEntriesByTheUser().add(entry);
         userService.saveEntry(byUserName);
+        System.out.println("All done !");
     }
     public void saveEntry(Entry entry){
         journalEntryRepo.save(entry);
