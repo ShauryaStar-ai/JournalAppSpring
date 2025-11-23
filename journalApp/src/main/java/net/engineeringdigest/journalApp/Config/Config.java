@@ -20,27 +20,16 @@ public class Config {
         http
                 .csrf(csrf -> csrf.disable())  // Disable CSRF for API testing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user").authenticated() // Only secure /user
-                        .anyRequest().permitAll()                 // Other endpoints public
+                        .requestMatchers("/hello").permitAll()       // Only /hello is public
+                        .anyRequest().authenticated()                // All other endpoints require auth
                 )
-                .httpBasic(Customizer.withDefaults());  // Enable HTTP Basic Auth
+                .httpBasic(Customizer.withDefaults());          // Enable HTTP Basic Auth
 
         return http.build();
+
     }
 
     // Define a user so Spring Security can authenticate
     // this is the sus code domain
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder encoder) {
-        UserDetails user = User.withUsername("user")
-                .password(encoder.encode("c3b0cb0b-71ce-48b5-bd96-edf5d34025cc")) // your password
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
