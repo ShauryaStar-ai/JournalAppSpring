@@ -21,6 +21,7 @@ public class UserService {
         userRepo.save(user);
     }
     private static PasswordEncoder p  = new BCryptPasswordEncoder();
+
     public void saveNewEntry(User user){
         user.setPassword(p.encode(user.getPassword()));
         userRepo.save(user);

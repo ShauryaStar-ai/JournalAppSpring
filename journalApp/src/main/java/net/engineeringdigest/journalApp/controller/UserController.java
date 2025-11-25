@@ -45,7 +45,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
         }
        else {
-           userService.saveEntry(user);
+           userService.saveNewEntry(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User Created");
        }
 
