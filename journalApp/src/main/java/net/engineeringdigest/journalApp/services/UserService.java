@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -24,7 +25,9 @@ public class UserService {
 
     public void saveNewEntry(User user){
         user.setPassword(p.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("USER"));
         userRepo.save(user);
+
     }
     public List<User> returnALLEntries(){
             return userRepo.findAll();
