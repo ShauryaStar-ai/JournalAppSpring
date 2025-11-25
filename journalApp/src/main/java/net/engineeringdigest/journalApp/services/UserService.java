@@ -4,6 +4,8 @@ import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repos.UserRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,11 @@ public class UserService {
     private UserRepo userRepo; // Journal Entry Repo
     public void saveEntry(User user){
 
+        userRepo.save(user);
+    }
+    private static PasswordEncoder p  = new BCryptPasswordEncoder();
+    public void saveNewEntry(User user){
+        user.setPassword(p.encode(user.getPassword()));
         userRepo.save(user);
     }
     public List<User> returnALLEntries(){

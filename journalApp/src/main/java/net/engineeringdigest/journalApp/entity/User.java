@@ -16,6 +16,15 @@ public class User {
     @NonNull private String userName;
     @NonNull private String password;
     @DBRef private List<Entry> entriesByTheUser = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     public ObjectId getId() {
         return id;
