@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,15 +22,26 @@ public class Config {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for API testing
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/journal/**").authenticated() // Require auth only for /journal/**
-                        .anyRequest().permitAll()                        // Everything else is public
+                // Disable CSRF for API testing
+                .csrf(csrf -> csrf.disable())
+
+                // Session management (stateless for REST APIs)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .httpBasic(Customizer.withDefaults());             // Enable HTTP Basic Auth
+
+                // Authorization rules
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/journal/**", "/user/**").authenticated()  // Require auth only for /journal/**
+                        .anyRequest().permitAll()                         // Everything else is public
+                )
+
+                // Enable HTTP Basic authentication
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

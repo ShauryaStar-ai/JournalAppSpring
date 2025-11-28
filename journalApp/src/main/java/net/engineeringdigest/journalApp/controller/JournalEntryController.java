@@ -7,14 +7,17 @@ import net.engineeringdigest.journalApp.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/journal") // put this end point on this whole class
-public class JavaEntryController {
+public class JournalEntryController {
 
     @Autowired
     JournaEntryService journaEntryService;
@@ -22,9 +25,12 @@ public class JavaEntryController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/{userName}")
-    public ResponseEntity<List<Entry>> getAllEntriesOfTheUser(@PathVariable String userName) {
+    @GetMapping()
+    public ResponseEntity<List<Entry>> getAllEntriesOfTheUser() {
+
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
             User byUserName = userService.findByUserName(userName);
             if (byUserName == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -44,9 +50,12 @@ public class JavaEntryController {
         }
     }
 
-    @PostMapping("/{userName}")
-    public ResponseEntity<String> createEntry(@RequestBody Entry entry, @PathVariable String userName) {
+    @PostMapping()
+    public ResponseEntity<String> createEntry(@RequestBody Entry entry) {
+
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
             journaEntryService.saveEntry(entry,userName);
             return ResponseEntity.status(HttpStatus.CREATED).body("There entry is sucessfully added");
         } catch (Exception e) {
@@ -58,20 +67,33 @@ public class JavaEntryController {
 
 
     @GetMapping("id/{myId}")
-    public Object getEntryByID(@PathVariable (name = "myId")String myId){
-        ObjectId id = new ObjectId(myId);
-        Entry entry = journaEntryService.findByID(id);
-        if (entry != null) {
-            // Return 200 OK with the entry
-            return ResponseEntity.ok(entry);
+    public Object getEntryByID(@PathVariable (name = "myId")String myId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        User user = userService.findByUserName(userName);
+        List<Entry> collection = user.getEntriesByTheUser().stream().filter(x -> x.getId().toString().equals(myId)).collect(Collectors.toList());
+        Entry entry;
+        if (!collection.isEmpty()) {
+            ObjectId id = new ObjectId(myId);
+            entry = journaEntryService.findByID(id);
+            if (entry != null) {
+                // Return 200 OK with the entry
+                return ResponseEntity.ok(entry);
+            }
+
         } else {
             // Return 404 Not Found if entry doesn't exist
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(entry);
     }
-    @DeleteMapping("id/{userName}/{myId}")
-    public ResponseEntity<String> removeEntryByID(@PathVariable("myId") String myId , @PathVariable String userName) {
+    // underwork now
+    @DeleteMapping("{myId}")
+    public ResponseEntity<String> removeEntryByID(@PathVariable("myId") String myId ) {
+
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
             ObjectId id = new ObjectId(myId);
             journaEntryService.deleteEntryByID(id ,userName);
 
@@ -85,8 +107,10 @@ public class JavaEntryController {
     }
 
 
-    @PutMapping("/{userName}/{myId}")
-    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry, @PathVariable String userName ){
+    @PutMapping("/{myId}")
+    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry ){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         try{
         ObjectId id = new ObjectId(myId);
             Entry old = journaEntryService.findByID(id);
