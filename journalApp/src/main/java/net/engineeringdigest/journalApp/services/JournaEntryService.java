@@ -38,11 +38,38 @@ public class JournaEntryService {
 
         return journalEntryRepo.findById(myId).orElse(null);
     }
+    /*@Transactional   // As of now this version is being blocked for testing puposes
     public void deleteEntryByID(@PathVariable ObjectId  id, String userName){
         User user = userService.findByUserName(userName);
-        user.getEntriesByTheUser().remove(findByID(id));
+        // the bug over here was that the the user we find in the usercollection is not the
+        // same in memoery as find by id
+        boolean removed = user.getEntriesByTheUser().remove(findByID(id));
+        if(removed){
+            journalEntryRepo.deleteById(id);
+            userService.saveEntry(user);
+        }
+        if (!removed) {
+            throw new IllegalStateException("Entry does not belong to the user");
+        }
+    }*/
+    @Transactional
+    public void deleteEntryByID(ObjectId id, String userName) {
+        User user = userService.findByUserName(userName);
+        // finding the instance of the entry and the later removring it
+
+        Entry entry = user.getEntriesByTheUser()// this code makes sure that the entry belong to the user
+                .stream()
+                .filter(x -> x.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Entry does not belong to the user"));
+        // removing the instance that for sure belong to the user
+        boolean removed = user.getEntriesByTheUser().remove(entry);
+        if(removed){ // removing from the journlal if only the entry belongs to the user.
+        // further removal from the list of entries
         journalEntryRepo.deleteById(id);
+        //Saving the updated used
         userService.saveEntry(user);
+        }
     }
 
 
