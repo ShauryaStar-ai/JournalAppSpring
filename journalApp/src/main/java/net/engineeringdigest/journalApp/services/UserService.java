@@ -24,9 +24,16 @@ public class UserService {
     private static PasswordEncoder p  = new BCryptPasswordEncoder();
 
     public void saveNewEntry(User user){
-        user.setRoles(Arrays.asList("USER"));
-        userRepo.save(user);
+        // Encode the password before saving
+        String rawPassword = user.getPassword(); // get the plain password from user object
+        String encodedPassword = p.encode(rawPassword); // encode it with BCrypt
+        user.setPassword(encodedPassword); // set the encoded password back to the user
 
+        // Set roles
+        user.setRoles(Arrays.asList("USER"));
+
+        // Save to repository
+        userRepo.save(user);
     }
     public List<User> returnALLEntries(){
             return userRepo.findAll();
