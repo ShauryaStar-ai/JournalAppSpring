@@ -87,7 +87,7 @@ public class JournalEntryController {
         }
         return ResponseEntity.ok(entry);
     }
-    // underwork now
+
     @DeleteMapping("{myId}")
     public ResponseEntity<String> removeEntryByID(@PathVariable("myId") String myId ) {
 
@@ -106,24 +106,38 @@ public class JournalEntryController {
         }
     }
 
-
+    // underProgress (testing)
     @PutMapping("/{myId}")
-    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry entry ){
+    public ResponseEntity<String> updateByID(@PathVariable(name = "myId") String myId , @RequestBody Entry newEntry ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        try{
-        ObjectId id = new ObjectId(myId);
-            Entry old = journaEntryService.findByID(id);
-            old.setTitle(entry.getTitle());
-            old.setConent(entry.getConent());
-            journaEntryService.saveEntry(old);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
+        User user = userService.findByUserName(userName);
+        List<Entry> collection = user.getEntriesByTheUser().stream().filter(x -> x.getId().toString().equals(myId)).collect(Collectors.toList());
+        if (!collection.isEmpty()) {
+            if (newEntry != null) {
+                // Return 200 OK with the entry
+                try{
+                    ObjectId id = new ObjectId(myId);
+                    Entry old = journaEntryService.findByID(id);
+                    old.setTitle(newEntry.getTitle());
+                    old.setConent(newEntry.getConent());
+                    journaEntryService.saveEntry(old);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
+                }
+                catch (Exception e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("Failed to update entry: " + e.getMessage());
+                }
+            }
+
+        } else {
+            // Return 404 Not Found if entry doesn't exist
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to update entry: " + e.getMessage());
-        }
-        }
+
+
+        return null;
+    }
     }
 
 
