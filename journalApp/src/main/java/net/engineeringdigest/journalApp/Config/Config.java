@@ -33,6 +33,7 @@ public class Config {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/journal/**", "/user/**").authenticated() // Require auth only for /journal/**
+                        .requestMatchers("/admin**").hasRole("ADMIN")
                         .anyRequest().permitAll()                         // Everything else is public
                 )
 
