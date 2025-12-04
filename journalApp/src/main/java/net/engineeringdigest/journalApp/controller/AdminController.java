@@ -4,9 +4,7 @@ import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -29,5 +27,10 @@ public class AdminController {
             // 404 Not Found with a message in response body
             return ResponseEntity.status(404).body("Could not return any users");
         }
+    }
+    //Post mapping
+    @PostMapping("create-new-admin")
+    public void createAdmin(@RequestBody User user){
+        userService.saveNewAdmin(user);
     }
 }

@@ -35,6 +35,17 @@ public class UserService {
         // Save to repository
         userRepo.save(user);
     }
+    public void saveNewAdmin(User user){
+        String rawPassword = user.getPassword(); // get the plain password from user object
+        String encodedPassword = p.encode(rawPassword); // encode it with BCrypt
+        user.setPassword(encodedPassword); // set the encoded password back to the user
+
+        // Set roles
+        user.setRoles(Arrays.asList("USER","ADMIN"));
+
+        // Save to repository
+        userRepo.save(user);
+    }
     public List<User> returnALLEntries(){
             return userRepo.findAll();
         }

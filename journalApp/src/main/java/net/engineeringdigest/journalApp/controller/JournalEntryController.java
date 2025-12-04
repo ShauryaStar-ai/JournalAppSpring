@@ -2,7 +2,7 @@ package net.engineeringdigest.journalApp.controller;
 
 import net.engineeringdigest.journalApp.entity.Entry;
 import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.services.JournaEntryService;
+import net.engineeringdigest.journalApp.services.JournalEntryService;
 import net.engineeringdigest.journalApp.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class JournalEntryController {
 
     @Autowired
-    JournaEntryService journaEntryService;
+    JournalEntryService journalEntryService;
 
     @Autowired
     UserService userService;
@@ -56,7 +56,7 @@ public class JournalEntryController {
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
-            journaEntryService.saveEntry(entry,userName);
+            journalEntryService.saveEntry(entry,userName);
             return ResponseEntity.status(HttpStatus.CREATED).body("There entry is sucessfully added");
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class JournalEntryController {
         Entry entry;
         if (!collection.isEmpty()) {
             ObjectId id = new ObjectId(myId);
-            entry = journaEntryService.findByID(id);
+            entry = journalEntryService.findByID(id);
             if (entry != null) {
                 // Return 200 OK with the entry
                 return ResponseEntity.ok(entry);
@@ -95,7 +95,7 @@ public class JournalEntryController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
             ObjectId id = new ObjectId(myId);
-            journaEntryService.deleteEntryByID(id ,userName);
+            journalEntryService.deleteEntryByID(id ,userName);
 
             // Return a confirmation message with HTTP 200 OK
             return ResponseEntity.ok("Entry with ID " + myId + " deleted successfully!");
@@ -118,10 +118,10 @@ public class JournalEntryController {
                 // Return 200 OK with the entry
                 try{
                     ObjectId id = new ObjectId(myId);
-                    Entry old = journaEntryService.findByID(id);
+                    Entry old = journalEntryService.findByID(id);
                     old.setTitle(newEntry.getTitle());
                     old.setConent(newEntry.getConent());
-                    journaEntryService.saveEntry(old);
+                    journalEntryService.saveEntry(old);
                     return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
                 }
                 catch (Exception e) {

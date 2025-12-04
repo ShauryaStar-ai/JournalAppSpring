@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @Component
-public class JournaEntryService {
+public class JournalEntryService {
     @Autowired
     private JournalEntryRepo journalEntryRepo;
     @Autowired
