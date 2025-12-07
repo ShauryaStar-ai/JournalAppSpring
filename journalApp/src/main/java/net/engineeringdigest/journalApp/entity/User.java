@@ -1,5 +1,7 @@
 package net.engineeringdigest.journalApp.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 @Component
+@Data
+@NoArgsConstructor
 public class User {
     @Id private ObjectId id;
     @Indexed(unique = true)
@@ -18,43 +22,12 @@ public class User {
     @DBRef private List<Entry> entriesByTheUser = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
 
-    public List<String> getRoles() {
-        return roles;
+    public static User build(String userName, String password, List<String> roles) {
+        User u = new User();
+        u.userName = userName;
+        u.password = password;
+        u.roles = roles;
+        return u;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public @NonNull String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(@NonNull String userName) {
-        this.userName = userName;
-    }
-
-    public @NonNull String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@NonNull String password) {
-        this.password = password;
-    }
-
-    public List<Entry> getEntriesByTheUser() {
-        return entriesByTheUser;
-    }
-
-    public void setEntriesByTheUser(List<Entry> entriesByTheUser) {
-        this.entriesByTheUser = entriesByTheUser;
-    }
 }

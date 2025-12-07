@@ -3,6 +3,7 @@ package net.engineeringdigest.journalApp;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import net.engineeringdigest.journalApp.entity.Entry;
+import net.engineeringdigest.journalApp.entity.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +24,10 @@ import java.util.Map;
 public class JournalApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JournalApplication.class, args);
+      //  SpringApplication.run(JournalApplication.class, args);
+        User u = new User();
+        u.setUserName("Max");
+        System.out.println("this guys name is "+u.getUserName());
 
 
     }
