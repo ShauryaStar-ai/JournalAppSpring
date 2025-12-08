@@ -24,10 +24,8 @@ import java.util.Map;
 public class JournalApplication {
 
     public static void main(String[] args) {
-      //  SpringApplication.run(JournalApplication.class, args);
-        User u = new User();
-        u.setUserName("Max");
-        System.out.println("this guys name is "+u.getUserName());
+       SpringApplication.run(JournalApplication.class, args);
+
 
 
     }
