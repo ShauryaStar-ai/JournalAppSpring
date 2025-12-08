@@ -44,7 +44,7 @@ public class JournalEntryController {
             return ResponseEntity.ok(entries);
 
         } catch (Exception e) {
-            // Something went wrong → return 500 Internal Server Error
+            System.out.println(e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }

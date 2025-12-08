@@ -3,6 +3,8 @@ package net.engineeringdigest.journalApp.services;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repos.UserRepo;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Component
 public class UserService {
+    //private static final Logger logger = LoggerFactory.getLogger(JournalEntryService.class);
     @Autowired
     private UserRepo userRepo; // Journal Entry Repo
     public void saveEntry(User user){
@@ -31,6 +34,17 @@ public class UserService {
 
         // Set roles
         user.setRoles(Arrays.asList("USER"));
+
+        // Save to repository
+        userRepo.save(user);
+    }
+    public void updateUserAndThenSaving (User user){
+        // Encode the password before saving
+        String rawPassword = user.getPassword(); // get the plain password from user object
+        String encodedPassword = p.encode(rawPassword); // encode it with BCrypt
+        user.setPassword(encodedPassword); // set the encoded password back to the user
+
+        // Set roles
 
         // Save to repository
         userRepo.save(user);

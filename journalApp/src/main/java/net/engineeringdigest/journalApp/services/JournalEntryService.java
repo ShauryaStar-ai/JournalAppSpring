@@ -4,6 +4,8 @@ import net.engineeringdigest.journalApp.entity.Entry;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repos.JournalEntryRepo;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +21,16 @@ public class JournalEntryService {
     private UserService userService; // Journal Entry Repo
     @Transactional
     public void saveEntry(Entry entry, String  userName ){
+        try{
         User byUserName = userService.findByUserName(userName);
 
         journalEntryRepo.save(entry);
         byUserName.getEntriesByTheUser().add(entry);
         userService.saveEntry(byUserName);
-        System.out.println("All done !");
+        System.out.println("All done !");}
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     public void saveEntry(Entry entry){
         journalEntryRepo.save(entry);
@@ -38,20 +44,7 @@ public class JournalEntryService {
 
         return journalEntryRepo.findById(myId).orElse(null);
     }
-    /*@Transactional   // As of now this version is being blocked for testing puposes
-    public void deleteEntryByID(@PathVariable ObjectId  id, String userName){
-        User user = userService.findByUserName(userName);
-        // the bug over here was that the the user we find in the usercollection is not the
-        // same in memoery as find by id
-        boolean removed = user.getEntriesByTheUser().remove(findByID(id));
-        if(removed){
-            journalEntryRepo.deleteById(id);
-            userService.saveEntry(user);
-        }
-        if (!removed) {
-            throw new IllegalStateException("Entry does not belong to the user");
-        }
-    }*/
+
     @Transactional
     public void deleteEntryByID(ObjectId id, String userName) {
         User user = userService.findByUserName(userName);

@@ -56,7 +56,7 @@ public class UserController {
                 if (user.getPassword() != null) {
                     userInDB.setPassword(user.getPassword());
                 }
-                userService.saveEntry(userInDB);
+                userService.updateUserAndThenSaving(userInDB);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Update the Entry");
             }
         } catch (Exception e) {
