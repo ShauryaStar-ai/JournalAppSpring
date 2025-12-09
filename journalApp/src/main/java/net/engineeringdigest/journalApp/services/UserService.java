@@ -17,7 +17,8 @@ import java.util.List;
 
 @Component
 public class UserService {
-    //private static final Logger logger = LoggerFactory.getLogger(JournalEntryService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private UserRepo userRepo; // Journal Entry Repo
     public void saveEntry(User user){
@@ -49,7 +50,9 @@ public class UserService {
         // Save to repository
         userRepo.save(user);
     }
+    // this meathod works fine and woulld just be the expermeint thing for logger
     public void saveNewAdmin(User user){
+        try{
         String rawPassword = user.getPassword(); // get the plain password from user object
         String encodedPassword = p.encode(rawPassword); // encode it with BCrypt
         user.setPassword(encodedPassword); // set the encoded password back to the user
@@ -58,7 +61,13 @@ public class UserService {
         user.setRoles(Arrays.asList("USER","ADMIN"));
 
         // Save to repository
-        userRepo.save(user);
+        userRepo.save(user);} catch (Exception e) {
+            logger.error("Failed to save new admin user '{}': {}",
+                    user.getUserName(),
+                    e.getMessage(),
+                    e);
+            throw e; // or throw a custom exception
+        }
     }
     public List<User> returnALLEntries(){
             return userRepo.findAll();
