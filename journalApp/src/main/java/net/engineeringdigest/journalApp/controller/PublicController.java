@@ -22,8 +22,8 @@ public class PublicController {
 
     private ResponseEntity<String> addUser(@RequestBody User user) {
         if(userService.findByUserName(user.getUserName()) != null){
-            log.debug("Entry already exists.Killing all bugs");
-            log.trace("this is trace over here ");
+            log.info("Entry already exists.Killing all bugs");
+            log.error("this is can only one user with the userName ");
             log.error("Entry already exists for {}",user.getUserName());
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");

@@ -36,7 +36,7 @@ public class AdminController {
 
         if(userService.findByUserName(user.getUserName()) != null){
             log.debug("Entry already exists.Killing all bugs");
-            log.trace("this is trace over here ");
+            log.trace("there can only be one admin with that userName");
             log.error("Entry already exists for {}",user.getUserName());
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
