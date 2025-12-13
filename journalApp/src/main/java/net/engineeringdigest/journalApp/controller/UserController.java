@@ -39,10 +39,36 @@ public class UserController {
                     .body(null);
         }
     }
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+            }
+            String userName = authentication.getName();
+
+            // Step 2: Find user in DB
+            User user = userService.findByUserName(userName);
+
+            if (user != null) {
+                // Step 3: Delete user
+                userService.deleteEntryByID(user.getId());
+                return ResponseEntity.ok("Deleted the entry");
+            } else {
+                // Step 4: User not found in DB
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("The user you are trying to delete is no longer there");
+            }
+        }
+        catch (Exception e) {
+            // Step 5: Any unexpected runtime exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Could not retrieve the user: " + e.getMessage());
+        }
 
 
-
-
+    }
     @PutMapping
     public ResponseEntity<String> updateUser(@RequestBody User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
