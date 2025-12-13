@@ -39,9 +39,13 @@ public class UserController {
                     .body(null);
         }
     }
+    /*@GetMapping("/greeting")
+    public String helloToUser(){
+
+    }*/
     @DeleteMapping
     public ResponseEntity<String> deleteUser(){
-        try{
+         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || !authentication.isAuthenticated()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
