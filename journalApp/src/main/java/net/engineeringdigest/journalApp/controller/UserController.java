@@ -1,10 +1,9 @@
 package net.engineeringdigest.journalApp.controller;
 
-import net.engineeringdigest.journalApp.entity.Entry;
 import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.repos.UserRepo;
 import net.engineeringdigest.journalApp.services.UserService;
-import org.bson.types.ObjectId;
+import net.engineeringdigest.journalApp.services.Weather.WeatherResponse;
+import net.engineeringdigest.journalApp.services.Weather.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    WeatherService weatherService;
     @GetMapping
     public ResponseEntity<List<User>> getAll() {
         try {
@@ -39,10 +41,23 @@ public class UserController {
                     .body(null);
         }
     }
-    /*@GetMapping("/greeting")
-    public String helloToUser(){
+    @GetMapping("/greeting")
+    public ResponseEntity<String> helloToUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weather = weatherService.getWeather("Atlanta"); // Assuming this returns a String
 
-    }*/
+        if (authentication != null && weather != null && authentication.isAuthenticated()) {
+            String userName = authentication.getName();
+            String response = "Hi " + userName + ", the temp in your city is " + weather.getCurrent().getTemperature();
+
+            // Return 200 OK with the response body
+            return ResponseEntity.ok(response);
+        } else {
+            // Return 401 Unauthorized with a custom message
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("The user is not even in the db");
+        }
+    }
     @DeleteMapping
     public ResponseEntity<String> deleteUser(){
          try{
