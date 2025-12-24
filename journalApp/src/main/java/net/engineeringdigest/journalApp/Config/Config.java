@@ -17,8 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class Config {
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -54,6 +53,5 @@ public class Config {
     ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 
 }

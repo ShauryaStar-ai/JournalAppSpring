@@ -1,11 +1,14 @@
 package net.engineeringdigest.journalApp.services;
 
 import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.repos.UserRepo;
+import net.engineeringdigest.journalAppRepo.repos.UserRepo;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -70,8 +73,21 @@ public class UserService {
         }
     }
     public List<User> returnALLEntries(){
-            return userRepo.findAll();
-        }
+        getUsersForSentimentAnalysis();
+        return userRepo.findAll();
+    }
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+    public List<User> getUsersForSentimentAnalysis(){
+
+
+        Query query= new Query();
+        query.addCriteria(Criteria.where("sentimentAnalysis").is(true));
+        query.addCriteria(Criteria.where("email").exists(true).ne(null));
+        List<User> users = mongoTemplate.find(query, User.class);
+        return users;
+    }
 
     public void deleteEntryByID(@PathVariable ObjectId  id){
         userRepo.deleteById(id);

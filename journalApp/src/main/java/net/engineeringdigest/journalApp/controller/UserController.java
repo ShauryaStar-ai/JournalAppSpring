@@ -41,6 +41,12 @@ public class UserController {
                     .body(null);
         }
     }
+    @GetMapping("/getUserToSentimentAnalysis")
+    public ResponseEntity<List<User>> gettSAUS(){
+        List<User> users = userService.getUsersForSentimentAnalysis();
+        return users;
+    }
+
     @GetMapping("/greeting")
     public ResponseEntity<String> helloToUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,7 +54,7 @@ public class UserController {
 
         if (authentication != null && weather != null && authentication.isAuthenticated()) {
             String userName = authentication.getName();
-            String response = "Hi " + userName + ", the temp in your city is " + weather.getCurrent().getTemperature();
+            String response = "Hi " + userName + ", the temp in your city is " + weather.getCurrent().getTemperature()+" degree celcuis";
 
             // Return 200 OK with the response body
             return ResponseEntity.ok(response);

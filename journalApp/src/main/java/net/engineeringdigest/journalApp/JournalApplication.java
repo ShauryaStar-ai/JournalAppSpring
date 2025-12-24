@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableMongoRepositories(basePackages = "net.engineeringdigest.journalAppRepo")
 public class JournalApplication {
 
     public static void main(String[] args) {
