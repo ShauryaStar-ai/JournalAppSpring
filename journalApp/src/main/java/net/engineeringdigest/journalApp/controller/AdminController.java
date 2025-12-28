@@ -1,7 +1,9 @@
 package net.engineeringdigest.journalApp.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.engineeringdigest.journalApp.entity.EmailRequest;
 import net.engineeringdigest.journalApp.entity.User;
+import net.engineeringdigest.journalApp.services.EmailService;
 import net.engineeringdigest.journalApp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +32,20 @@ public class AdminController {
             return ResponseEntity.status(404).body("Could not return any users");
         }
     }
+    @GetMapping("/getUserToSentimentAnalysis")
+    public ResponseEntity<List<User>> gettSAUS() {
+        List<User> users = userService.getUsersForSentimentAnalysis();
+
+        if (users != null && !users.isEmpty()) {
+            // Return the list of users with HTTP 200 OK
+            return ResponseEntity.ok(users);
+        } else {
+            // Return HTTP 404 Not Found if no users exist
+            return ResponseEntity.notFound().build();
+        }
+    }
     //Post mapping
-    @PostMapping("create-new-admin")
+    @PostMapping("/create-new-admin")
     public ResponseEntity<String> createAdmin(@RequestBody User user){
 
         if(userService.findByUserName(user.getUserName()) != null){
@@ -45,5 +59,18 @@ public class AdminController {
         userService.saveNewAdmin(user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Added the new Admin");
         }
+    }
+    @Autowired
+    EmailService emailService;
+    @PostMapping("/sendEmailForSA")
+    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request){
+        if (request.getTo() != null && request.getSubject() != null && request.getBody() != null) {
+            emailService.sendEmail(request.getTo(), request.getSubject(), request.getBody());
+            return ResponseEntity.ok("Email sent successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Missing required email fields");
+        }
+
     }
 }

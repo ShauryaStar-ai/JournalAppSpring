@@ -41,11 +41,7 @@ public class UserController {
                     .body(null);
         }
     }
-    @GetMapping("/getUserToSentimentAnalysis")
-    public ResponseEntity<List<User>> gettSAUS(){
-        List<User> users = userService.getUsersForSentimentAnalysis();
-        return users;
-    }
+
 
     @GetMapping("/greeting")
     public ResponseEntity<String> helloToUser() {
