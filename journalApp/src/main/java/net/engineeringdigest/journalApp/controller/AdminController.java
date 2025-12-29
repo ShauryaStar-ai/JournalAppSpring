@@ -1,6 +1,7 @@
 package net.engineeringdigest.journalApp.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.engineeringdigest.journalApp.Scheduler.emailScheduler;
 import net.engineeringdigest.journalApp.entity.EmailRequest;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.services.EmailService;
@@ -72,5 +73,13 @@ public class AdminController {
                     .body("Missing required email fields");
         }
 
+    }
+    @Autowired
+    private emailScheduler emailScheduler;
+
+
+    @GetMapping("/sendSAEmail")
+    public void sendSAEmail() {
+        emailScheduler.fetchUsersAndSendSA();
     }
 }

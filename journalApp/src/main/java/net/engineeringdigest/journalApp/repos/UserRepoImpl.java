@@ -1,4 +1,4 @@
-package net.engineeringdigest.journalAppRepo.repos;
+package net.engineeringdigest.journalApp.repos;
 import net.engineeringdigest.journalApp.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -17,7 +17,6 @@ public class UserRepoImpl {
 
         Query query= new Query();
         query.addCriteria(Criteria.where("sentimentAnalysis").is(true));
-        //query.addCriteria(Criteria.where("email").exists(true).ne(null));
         List<User> users = mongoTemplate.find(query, User.class);
         return users;
     }

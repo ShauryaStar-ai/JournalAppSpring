@@ -2,7 +2,7 @@ package net.engineeringdigest.journalApp.services;
 
 import net.engineeringdigest.journalApp.entity.Entry;
 import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalAppRepo.repos.JournalEntryRepo;
+import net.engineeringdigest.journalApp.repos.JournalEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

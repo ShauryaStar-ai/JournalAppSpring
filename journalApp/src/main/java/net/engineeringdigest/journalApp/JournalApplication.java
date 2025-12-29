@@ -24,7 +24,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableMongoRepositories(basePackages = "net.engineeringdigest.journalAppRepo")
+@EnableMongoRepositories(basePackages = "net.engineeringdigest.journalApp")
 public class JournalApplication {
 
     public static void main(String[] args) {

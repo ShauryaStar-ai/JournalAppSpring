@@ -2,7 +2,7 @@ package net.engineeringdigest.journalApp.cashe;
 
 import jakarta.annotation.PostConstruct;
 import net.engineeringdigest.journalApp.entity.ConfigJournalAppEntity;
-import net.engineeringdigest.journalAppRepo.repos.ConfigJournalAppRepo;
+import net.engineeringdigest.journalApp.repos.ConfigJournalAppRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
