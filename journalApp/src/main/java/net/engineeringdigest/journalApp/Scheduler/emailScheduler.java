@@ -6,6 +6,7 @@ import net.engineeringdigest.journalApp.services.EmailService;
 import net.engineeringdigest.journalApp.services.SentimentAnalysis;
 import net.engineeringdigest.journalApp.repos.UserRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class emailScheduler {
     private UserRepoImpl userRepoImpl;
     @Autowired
     private SentimentAnalysis sentimentAnalysis;
+    @Scheduled(cron = "0 29 8 ? * TUE")
     public void fetchUsersAndSendSA(){
         List<User> usersForSentimentAnalysis = userRepoImpl.getUsersForSentimentAnalysis();
         for (User user : usersForSentimentAnalysis) {

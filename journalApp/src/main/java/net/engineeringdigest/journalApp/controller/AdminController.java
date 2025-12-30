@@ -78,8 +78,8 @@ public class AdminController {
     private emailScheduler emailScheduler;
 
 
-    @GetMapping("/sendSAEmail")
-    public void sendSAEmail() {
-        emailScheduler.fetchUsersAndSendSA();
-    }
+        @GetMapping("/sendSAEmail")
+        public void sendSAEmail() {
+            emailScheduler.fetchUsersAndSendSA();
+        }
 }
