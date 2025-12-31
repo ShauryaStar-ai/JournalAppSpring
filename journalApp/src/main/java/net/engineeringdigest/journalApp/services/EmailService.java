@@ -1,6 +1,7 @@
 package net.engineeringdigest.journalApp.services;
 
 import lombok.extern.slf4j.Slf4j;
+import net.engineeringdigest.journalApp.cashe.AppCahse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,6 +23,7 @@ public class EmailService {
             log.error("ErrorWhileSendingEmail"+e.getMessage());
 
         }
+
     }
 
 

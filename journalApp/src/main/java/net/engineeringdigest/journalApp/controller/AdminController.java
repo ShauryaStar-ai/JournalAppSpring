@@ -1,7 +1,7 @@
 package net.engineeringdigest.journalApp.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import net.engineeringdigest.journalApp.Scheduler.emailScheduler;
+import net.engineeringdigest.journalApp.Scheduler.journalAppScheduler;
 import net.engineeringdigest.journalApp.entity.EmailRequest;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.services.EmailService;
@@ -75,7 +75,7 @@ public class AdminController {
 
     }
     @Autowired
-    private emailScheduler emailScheduler;
+    private journalAppScheduler emailScheduler;
 
 
         @GetMapping("/sendSAEmail")

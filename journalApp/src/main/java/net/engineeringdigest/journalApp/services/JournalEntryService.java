@@ -25,7 +25,7 @@ public class JournalEntryService {
         journalEntryRepo.save(entry);
         byUserName.getEntriesByTheUser().add(entry);
         userService.saveEntry(byUserName);
-        System.out.println("All done !");}
+        System.out.println("Entry is saved !");}
         catch (Exception e) {
             throw new RuntimeException(e);
         }

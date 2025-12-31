@@ -2,6 +2,7 @@ package net.engineeringdigest.journalApp.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.engineeringdigest.journalApp.enums.Sentiment;
 import org.bson.types.ObjectId;
 
 import org.springframework.data.annotation.Id;
@@ -19,6 +20,6 @@ public class Entry {
     private String title;
     private String conent;
     private LocalDateTime dateTime = LocalDateTime.now();
-
+    private Sentiment sentiment;
 
 }
